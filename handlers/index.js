@@ -1,3 +1,3 @@
 const homeHandler = require('./home');
-
-module.exports = [homeHandler];
+const staticFiles = require('./static-files')
+module.exports = [homeHandler, staticFiles];
