@@ -16,7 +16,7 @@ function getContentType(url) {
     }
 }
 
-module.exports((req, res) => {
+module.exports = ((req, res) => {
     const pathname = url.parse(req.url).pathname;
 
     if (pathname.startsWith('/content') && req.method === 'GET') {
