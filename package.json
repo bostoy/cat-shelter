@@ -1,0 +1,27 @@
+{
+  "name": "cat-shelter",
+  "version": "1.0.0",
+  "description": "SoftUni JS Back-End Workshop Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bostoy/cat-shelter.git"
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "javascript",
+    "js",
+    "workshop",
+    "softuni"
+  ],
+  "author": "Borislav Stoyanov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bostoy/cat-shelter/issues"
+  },
+  "homepage": "https://github.com/bostoy/cat-shelter#readme"
+}
