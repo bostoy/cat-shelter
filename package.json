@@ -24,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/bostoy/cat-shelter/issues"
   },
-  "homepage": "https://github.com/bostoy/cat-shelter#readme"
+  "homepage": "https://github.com/bostoy/cat-shelter#readme",
+  "devDependencies": {
+    "formidable": "^1.2.2"
+  }
 }
