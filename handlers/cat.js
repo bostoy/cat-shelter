@@ -8,8 +8,8 @@ const cats = require('../data/cats.json');
 
 module.exports = (req, res) => {
     const pathname = url.parse(req.url).pathname;
-    //you should check every single pathname and request method and load an HTML page or parse the incoming data.
 
+    //you should check every single pathname and request method and load an HTML page or parse the incoming data.
     if (pathname === '/cats/add-cat' && req.method === 'GET') {
 
         const filePath = path.normalize(
