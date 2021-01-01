@@ -26,9 +26,8 @@ module.exports = (req, res) => {
                 res.end();
                 return;
             }
-            const placeholder = breeds.map(breed => `<option value="${breed}">${breed}</option>`); //for every breed in db creates an option
-            console.log('Data to string ' + data.toString()); //check data
-            const modifiedData = data.toString().replace('{{catBreeds}}', placeholder);
+            const catBreedPlaceholder = breeds.map(breed => `<option value="${breed}">${breed}</option>`); //for every breed in db creates an option
+            const modifiedData = data.toString().replace('{{catBreeds}}', catBreedPlaceholder);
             res.writeHead(200, { 'Content-Type': 'text/html' });
             res.write(modifiedData);
             res.end();
@@ -54,6 +53,42 @@ module.exports = (req, res) => {
 
     } else if (pathname === '/cats/add-cat' && req.method === 'POST') {
 
+        let form = new formidable.IncomingForm();
+        form.parse(req, (err, fields, files) => {
+            //fields is the incoming data from the form / files is the information about the uploaded file via form 
+            if (err) {
+                throw err;
+            }
+            let oldPath = files.upload.path;
+            let newPath = path.normalize(path.join(globalPath, '/content/images/' + files.upload.name));
+
+            fs.rename(oldPath, newPath, (err) => {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+                console.log(`Image uploaded to ${newPath}`);
+            });
+
+            fs.readFile('./data/cats.json', (err, data) => {
+                if (err) {
+                    throw err;
+                }
+
+                const allCats = JSON.parse(data);
+                allCats.push({ id: (cats.length + 1).toString(), ...fields, image: files.upload.name });
+                const json = JSON.stringify(allCats);
+
+                fs.writeFile('./data/cats.json', json, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log('Cat successfully added!');
+                })
+            });
+            res.writeHead(301, { 'location': '/' });
+            res.end();
+        })
     } else if (pathname === '/cats/add-breed' && req.method === 'POST') {
 
         let formData = '';
