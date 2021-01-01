@@ -1,2 +1,4 @@
-# cat-shelter
-Cat Shelter: SoftUni Nodejs Workshop
+# Cat Shelter: SoftUni Nodejs Workshop
+## Run the project:
+  * npm install
+  * npm start
