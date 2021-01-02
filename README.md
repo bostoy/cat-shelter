@@ -4,5 +4,3 @@ Cat Shelter" is very simple cat catalog which shows the "database" (JSON file) o
   1. npm install
   1. npm start
   1. open a browser and go to [localhost:3000](http://localhost:3000/)
-
-## Images:
