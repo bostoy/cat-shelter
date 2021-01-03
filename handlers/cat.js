@@ -156,6 +156,49 @@ module.exports = (req, res) => {
             res.end();
         });
     } else if (pathname.includes('/cats-edit') && req.method === 'POST') {
+        let form = new formidable.IncomingForm();
+        form.parse(req, (err, fields, files) => {
+            console.log(fields);
+            if (err) {
+                console.log(err);
+            }
+            const oldPath = files.upload.path;
+            const newPath = path.normalize(path.join(globalPath, `/content/images/${files.upload.name}`));
 
+            fs.rename(oldPath, newPath, err => {
+                if (err) {
+                    throw err;
+                }
+                console.log(`Image successfully uploaded to : ${newPath}`);
+            });
+
+            fs.readFile('./data/cats.json', 'utf-8', (err, data) => {
+
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+
+                const id = pathname.split('/').pop();
+                let allCats = JSON.parse(data);
+                for (const cat of allCats) {
+                    if (cat.id === id) {
+                        cat.name = fields.name;
+                        cat.description = fields.description;
+                        cat.breed = fields.breed;
+                        cat.image = files.upload.name;
+                    }
+                };
+
+                const json = JSON.stringify(allCats);
+                fs.writeFile('./data/cats.json', json, (err) => {
+                    if (err) {
+                        throw err;
+                    }
+                    console.log(`Cat ID:${id} successfully edited!`);
+                })
+            })
+            res.writeHead(301, { 'location': '/' })
+        })
     }
 }
