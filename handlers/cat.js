@@ -120,5 +120,42 @@ module.exports = (req, res) => {
         });
         res.writeHead(301, { 'location': '/' });
         res.end();
+    } else if (pathname.includes('/cats-edit') && req.method === 'GET') {
+        const filePath = path.normalize(path.join(__dirname, '../views/editCat.html'));
+        fs.readFile(filePath, (err, data) => {
+            if (err) {
+                console.log(err);
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.write('404 File Not Found');
+                res.end();
+                return;
+            }
+            const id = pathname.split('/').pop();
+            const cat = cats.find((cat) => cat.id === id);
+            let editForm = `<form action="/cats-edit/${id}" method="POST" class="cat-form" enctype="multipart/form-data">
+            <h2>Edit Cat</h2>
+            <label for="name">Name</label>
+            <input name="name" type="text" id="name" value="${cat.name}">
+            <label for="description">Description</label>
+            <textarea name="description" id="description">${cat.description}</textarea>
+            <label for="image">Image</label>
+            <input name="upload" type="file" id="image">
+            <label for="group">Breed</label>
+            <select name="breed" id="group">
+                {{catBreeds}}
+            </select>
+            <button type="submit">Add Cat</button>
+        </form>`
+            const placeholder = breeds.map(breed => `<option value="${breed}">${breed}</option>`);
+            editForm = editForm.replace('{{catBreeds}}', placeholder);
+
+            const modifiedData = data.toString().replace('{{edit}}', editForm);
+
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write(modifiedData);
+            res.end();
+        });
+    } else if (pathname.includes('/cats-edit') && req.method === 'POST') {
+
     }
 }
